@@ -10,10 +10,6 @@ using Crud_Operation_Task_API.MiddleWare;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http.HttpResults;
-
-
-//using Crud_Operation_Task.Services.IServices;
-//using Crud_Operation_Task.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

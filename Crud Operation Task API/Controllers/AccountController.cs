@@ -69,5 +69,22 @@ namespace Crud_Operation_Task_API.Controllers
             return Ok(mappedUsers);
         }
 
+
+
+        [HttpGet("GetUserByEmail")]
+        public async Task<ActionResult<DisplayUserDto>>GetUser(string email)
+        {
+
+            var user= await _userServices.GetUserByEmailAsync(email);
+            if (user is null) return NotFound();
+
+            return Ok(user);
+
+
+        }
+
+
+
+
     }
 }

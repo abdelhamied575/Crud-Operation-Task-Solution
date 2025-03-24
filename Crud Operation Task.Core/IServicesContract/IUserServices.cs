@@ -18,5 +18,8 @@ namespace Crud_Operation_Task.Core.IServicesContract
         Task<bool> CheckEmailExistAsync(string Email);
 
 
+        Task<DisplayUserDto> GetUserByEmailAsync(string Email);
+
+
     }
 }

@@ -112,7 +112,28 @@ namespace Crud_Operation_Task.Services.Services
         }
 
 
-        
+        public async Task<DisplayUserDto> GetUserByEmailAsync(string Email)
+        {
+
+            var user = await _userManager.FindByEmailAsync(Email);
+            if (user is null) return null;
+
+            var mappedUser = new DisplayUserDto()
+            {
+                Id=user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(),
+                IsActive = user.IsActive
+            };
+
+            return mappedUser;
+
+        }
+
+
+
 
 
     }
