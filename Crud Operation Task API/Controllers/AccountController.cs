@@ -40,11 +40,9 @@ namespace Crud_Operation_Task_API.Controllers
 
 
         [HttpPost("Register")]
+        [Authorize]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-
-
-
             var user = await _userServices.RegisterAsync(registerDto);
             if (user is null) return BadRequest();
             return Ok(user);
@@ -52,6 +50,7 @@ namespace Crud_Operation_Task_API.Controllers
 
 
         [HttpGet("GetAllUsers")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<DisplayUserDto>>> GetAllUsers()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -84,6 +83,15 @@ namespace Crud_Operation_Task_API.Controllers
         }
 
 
+
+      
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("This is a protected endpoint");
+        }
 
 
     }

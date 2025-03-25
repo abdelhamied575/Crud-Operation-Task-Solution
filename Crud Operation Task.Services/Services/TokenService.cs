@@ -47,11 +47,11 @@ namespace Crud_Operation_Task.Services.Services
 
             var token = new JwtSecurityToken(
 
-                issuer: _configuration["JWT:Issure"],
-                audience: _configuration["JWT:CRUDAPP"],
+                issuer: _configuration["JWT:Issuer"],
+                audience: _configuration["JWT:Audience"],
                 expires: DateTime.Now.AddDays(double.Parse(_configuration["JWT:DurationInDays"])),
                 claims: authClaims,
-                signingCredentials: new SigningCredentials(authKey,SecurityAlgorithms.HmacSha256Signature)
+                signingCredentials: new SigningCredentials(authKey,SecurityAlgorithms.HmacSha256)
             );
 
             // Return Token After Generated and Encrypted

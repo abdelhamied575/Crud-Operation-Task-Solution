@@ -7,7 +7,6 @@ using Crud_Operation_Task.Repository.Context;
 using Crud_Operation_Task.Services.Services;
 using Crud_Operation_Task_API.Error;
 using Crud_Operation_Task_API.MiddleWare;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -15,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Crud_Operation_Task_API
 {
@@ -28,8 +28,7 @@ namespace Crud_Operation_Task_API
 
             builder.Services.AddControllers();
 
-            //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //builder.Services.AddScoped<IUserService, UserService>();
+           
             builder.Services.AddScoped<IUserServices, UserService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();   
@@ -37,17 +36,18 @@ namespace Crud_Operation_Task_API
             builder.Services.AddDbContext<AppDbContext>(options => 
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
 
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuer = true,
-                ValidIssuer = builder.Configuration["JWT:Issuer"],
+                ValidIssuer = builder.Configuration["JWT:Issuer "],
                 ValidateAudience = true,
                 ValidAudience = builder.Configuration["JWT:Audience"],
                 ValidateLifetime = true,
@@ -93,11 +93,11 @@ namespace Crud_Operation_Task_API
                 app.UseSwaggerUI();
             }
 
-            app.UseMiddleware<ExceptionMiddleWare>();
 
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<ExceptionMiddleWare>();
 
             app.UseStatusCodePagesWithReExecute("/error/{0}");
 
