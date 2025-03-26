@@ -64,7 +64,7 @@ namespace Crud_Operation_Task.Services.Services
         {
 
 
-            if (await CheckEmailExistAsync(registerDto.Email)) return null;
+                if (await CheckEmailExistAsync(registerDto.Email)) return null;
 
 
             var user = new User()
@@ -132,9 +132,72 @@ namespace Crud_Operation_Task.Services.Services
 
         }
 
+        public async Task<DisplayUserDto> UpdateUserAsync(UpdateUserDto updateUserDto)
+        {
+
+
+            var user = await _userManager.FindByIdAsync(updateUserDto.Id);
+            if (user == null) return null;
+
+            // Update user details
+            user.FirstName = updateUserDto.FirstName;
+            user.LastName = updateUserDto.LastName;
+            user.Email = updateUserDto.Email;
+            user.UserName = updateUserDto.Email.Split("@")[0]; 
+            user.NormalizedEmail = updateUserDto.Email.ToUpper();
+
+            // Update password if provided
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, updateUserDto.Password);
+                if (!result.Succeeded) return null;
+            }
+
+            // Update role
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            if (currentRoles.FirstOrDefault() != updateUserDto.Role)
+            {
+                await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                if (await _roleManager.RoleExistsAsync(updateUserDto.Role))
+                {
+                    await _userManager.AddToRoleAsync(user, updateUserDto.Role);
+                }
+                else
+                {
+                    return null; 
+                }
+            }
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded) return null;
+
+            await _unitOfWork.CompleteAsync();
+
+            return new DisplayUserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = updateUserDto.Role,
+                IsActive = user.IsActive
+            };
 
 
 
+        }
 
+        public async Task<bool> DeleteUserAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded) return false;
+
+            await _unitOfWork.CompleteAsync();
+            return true;
+        }
     }
 }

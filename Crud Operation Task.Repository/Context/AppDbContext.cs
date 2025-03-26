@@ -27,41 +27,40 @@ namespace Crud_Operation_Task.Repository.Context
 
 
 
-
             // Define role IDs
-            string adminRoleId = Guid.NewGuid().ToString();
-            string managerRoleId = Guid.NewGuid().ToString();
-            string employeeRoleId = Guid.NewGuid().ToString();
+            //string adminRoleId = Guid.NewGuid().ToString();
+            //string managerRoleId = Guid.NewGuid().ToString();
+            //string employeeRoleId = Guid.NewGuid().ToString();
 
-            // Seed Roles
-            builder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = adminRoleId, Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Id = managerRoleId, Name = "Manager", NormalizedName = "MANAGER" },
-                new IdentityRole { Id = employeeRoleId, Name = "Employee", NormalizedName = "EMPLOYEE" }
-            );
+            //// Seed Roles
+            //builder.Entity<IdentityRole>().HasData(
+            //    new IdentityRole { Id = adminRoleId, Name = "Admin", NormalizedName = "ADMIN" },
+            //    new IdentityRole { Id = managerRoleId, Name = "Manager", NormalizedName = "MANAGER" },
+            //    new IdentityRole { Id = employeeRoleId, Name = "Employee", NormalizedName = "EMPLOYEE" }
+            //);
 
-            // Seed Admin User
-            string adminUserId = Guid.NewGuid().ToString();
-            var adminUser = new User
-            {
-                Id = adminUserId,
-                UserName = "admin",
-                FirstName = "Abdelhamied",
-                LastName = "Belal",
-                Email = "admin@admin.com",
-                NormalizedEmail="ADMIN@ADMIN.COM"
-            };
+            //// Seed Admin User
+            //string adminUserId = Guid.NewGuid().ToString();
+            //var adminUser = new User
+            //{
+            //    Id = adminUserId,
+            //    UserName = "admin",
+            //    FirstName = "Abdelhamied",
+            //    LastName = "Belal",
+            //    Email = "admin@admin.com",
+            //    NormalizedEmail="ADMIN@ADMIN.COM"
+            //};
 
-            // Set Admin Password
-            PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
-            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Admin@123");
+            //// Set Admin Password
+            //PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
+            //adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Admin@123");
 
-            builder.Entity<User>().HasData(adminUser);
+            //builder.Entity<User>().HasData(adminUser);
 
-            // Assign Admin User to System Administrator Role
-            builder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string> { UserId = adminUserId, RoleId = adminRoleId }
-            );
+            //// Assign Admin User to System Administrator Role
+            //builder.Entity<IdentityUserRole<string>>().HasData(
+            //    new IdentityUserRole<string> { UserId = adminUserId, RoleId = adminRoleId }
+            //);
 
         }
 

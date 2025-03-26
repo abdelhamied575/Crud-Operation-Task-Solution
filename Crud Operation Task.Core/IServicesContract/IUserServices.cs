@@ -20,6 +20,10 @@ namespace Crud_Operation_Task.Core.IServicesContract
 
         Task<DisplayUserDto> GetUserByEmailAsync(string Email);
 
+        Task<DisplayUserDto> UpdateUserAsync(UpdateUserDto updateUserDto);
+
+        Task<bool> DeleteUserAsync(string userId);
+
 
     }
 }

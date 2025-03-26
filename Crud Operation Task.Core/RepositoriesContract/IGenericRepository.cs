@@ -11,7 +11,7 @@ namespace Crud_Operation_Task.Core.RepositoriesContract
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 
-        Task<TEntity> GetAsync(string id);
+        Task<TEntity> GetAsync(string email);
 
         Task AddAsync(TEntity entity);
 

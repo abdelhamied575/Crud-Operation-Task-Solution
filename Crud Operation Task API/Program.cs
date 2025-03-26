@@ -47,7 +47,7 @@ namespace Crud_Operation_Task_API
             }).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuer = true,
-                ValidIssuer = builder.Configuration["JWT:Issuer "],
+                ValidIssuer = builder.Configuration["JWT:Issuer"],
                 ValidateAudience = true,
                 ValidAudience = builder.Configuration["JWT:Audience"],
                 ValidateLifetime = true,

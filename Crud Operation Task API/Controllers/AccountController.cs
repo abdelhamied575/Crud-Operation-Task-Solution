@@ -40,7 +40,7 @@ namespace Crud_Operation_Task_API.Controllers
 
 
         [HttpPost("Register")]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             var user = await _userServices.RegisterAsync(registerDto);
@@ -84,14 +84,28 @@ namespace Crud_Operation_Task_API.Controllers
 
 
 
-      
-
-        [Authorize]
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPut("UpdateUser")]
+        [Authorize(Roles = "Admin,Employee,Manager")] 
+        public async Task<ActionResult<DisplayUserDto>> UpdateUser([FromBody] UpdateUserDto updateUserDto)
         {
-            return Ok("This is a protected endpoint");
+            var updatedUser = await _userServices.UpdateUserAsync(updateUserDto);
+            if (updatedUser == null) return BadRequest("Failed to update user");
+
+            return Ok(updatedUser);
         }
+
+
+
+        [HttpDelete("DeleteUser/{userId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var success = await _userServices.DeleteUserAsync(userId);
+            if (!success) return NotFound("User not found or deletion failed");
+
+            return Ok(new { Message = "User deleted successfully" });
+        }
+
 
 
     }

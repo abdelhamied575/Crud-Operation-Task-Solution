@@ -27,9 +27,9 @@ namespace Crud_Operation_Task.Repository.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> GetAsync(string id)
+        public async Task<TEntity> GetAsync(string email)
         {
-             return await _context.Set<TEntity>().FindAsync(id);
+             return await _context.Set<TEntity>().FindAsync(email);
         }
 
         public async Task AddAsync(TEntity entity)
